@@ -1,0 +1,152 @@
+[
+    {
+        "topic": "Cognitive Ability Test",
+        "subTopic": "Numerical Reasoning",
+        "difficulty": "Easy",
+        "text": "What is 43 + 57?",
+        "options": ["90", "100", "110", "120"],
+        "answer": 1,
+        "explanation": "43 added to 57 equals 100.",
+        "optimalTime": 15
+    },
+    {
+        "topic": "Cognitive Ability Test",
+        "subTopic": "Verbal Reasoning",
+        "difficulty": "Easy",
+        "text": "Which word is a synonym for 'happy'?",
+        "options": ["Sad", "Elated", "Angry", "Serious"],
+        "answer": 1,
+        "explanation": "'Elated' is a synonym for 'happy'.",
+        "optimalTime": 15
+    },
+    {
+        "topic": "Cognitive Ability Test",
+        "subTopic": "Abstract Reasoning",
+        "difficulty": "Easy",
+        "text": "What comes next: Square, Triangle, Circle, Square, Triangle, ?",
+        "options": ["Circle", "Square", "Triangle", "Hexagon"],
+        "answer": 0,
+        "explanation": "The pattern is repeating: Square, Triangle, Circle.",
+        "optimalTime": 20
+    },
+    {
+        "topic": "Cognitive Ability Test",
+        "subTopic": "Spatial Reasoning",
+        "difficulty": "Easy",
+        "text": "How many corners does a cube have?",
+        "options": ["4", "6", "8", "12"],
+        "answer": 2,
+        "explanation": "A cube has 8 corners.",
+        "optimalTime": 20
+    },
+    {
+        "topic": "Cognitive Ability Test",
+        "subTopic": "Logical Reasoning",
+        "difficulty": "Easy",
+        "text": "If all roses are flowers and some flowers fade quickly, then can some roses fade quickly?",
+        "options": ["Yes", "No"],
+        "answer": 0,
+        "explanation": "Since some flowers (and all roses are flowers) fade quickly, it follows that some roses can fade quickly.",
+        "optimalTime": 20
+    },
+    {
+        "topic": "Cognitive Ability Test",
+        "subTopic": "Numerical Reasoning",
+        "difficulty": "Medium",
+        "text": "What is 50% of 150?",
+        "options": ["75", "100", "125", "150"],
+        "answer": 0,
+        "explanation": "50% of 150 is 75.",
+        "optimalTime": 30
+    },
+    {
+        "topic": "Cognitive Ability Test",
+        "subTopic": "Verbal Reasoning",
+        "difficulty": "Medium",
+        "text": "Rearrange the letters 'O-S-E-R' to form a meaningful word.",
+        "options": ["Rose", "Soar", "Eros", "Sore"],
+        "answer": 0,
+        "explanation": "Rearranged, 'O-S-E-R' forms the word 'Rose'.",
+        "optimalTime": 30
+    },
+    {
+        "topic": "Cognitive Ability Test",
+        "subTopic": "Abstract Reasoning",
+        "difficulty": "Medium",
+        "text": "If a sequence of operations is 'add 2, subtract 1, multiply by 3', what is the result of applying these to the number 3?",
+        "options": ["10", "12", "14", "16"],
+        "answer": 1,
+        "explanation": "Starting with 3, add 2 (gets 5), subtract 1 (gets 4), multiply by 3 (gets 12).",
+        "optimalTime": 40
+    },
+    {
+        "topic": "Cognitive Ability Test",
+        "subTopic": "Spatial Reasoning",
+        "difficulty": "Medium",
+        "text": "If you fold a square paper along its diagonal, how many triangles will it form?",
+        "options": ["1", "2", "3", "4"],
+        "answer": 1,
+        "explanation": "Folding a square paper along its diagonal forms 2 triangles.",
+        "optimalTime": 40
+    },
+    {
+        "topic": "Cognitive Ability Test",
+        "subTopic": "Logical Reasoning",
+        "difficulty": "Medium",
+        "text": "If the day after tomorrow is Sunday, what day is it today?",
+        "options": ["Friday", "Thursday", "Wednesday", "Saturday"],
+        "answer": 1,
+        "explanation": "If the day after tomorrow is Sunday, today must be Friday.",
+        "optimalTime": 45
+    },
+    {
+        "topic": "Cognitive Ability Test",
+        "subTopic": "Numerical Reasoning",
+        "difficulty": "Hard",
+        "text": "A clock shows 3:15. What is the angle between the hour and the minute hands?",
+        "options": ["0 degrees", "7.5 degrees", "22.5 degrees", "45 degrees"],
+        "answer": 2,
+        "explanation": "At 3:15, the angle between the hour and the minute hands is 22.5 degrees.",
+        "optimalTime": 60
+    },
+    {
+        "topic": "Cognitive Ability Test",
+        "subTopic": "Verbal Reasoning",
+        "difficulty": "Hard",
+        "text": "Complete the analogy: Book is to Reading as Fork is to:",
+        "options": ["Eating", "Writing", "Cooking", "Stabbing"],
+        "answer": 0,
+        "explanation": "Just as a Book is used for Reading, a Fork is used for Eating.",
+        "optimalTime": 60
+    },
+    {
+        "topic": "Cognitive Ability Test",
+        "subTopic": "Abstract Reasoning",
+        "difficulty": "Hard",
+        "text": "What is the next number in the sequence: 2, 6, 14, 30, ?",
+        "options": ["62", "46", "58", "54"],
+        "answer": 1,
+        "explanation": "The sequence follows the pattern: n * 2 + 2. So, the next number is 30 * 2 + 2 = 62.",
+        "optimalTime": 75
+    },
+    {
+        "topic": "Cognitive Ability Test",
+        "subTopic": "Spatial Reasoning",
+        "difficulty": "Hard",
+        "text": "If you rotate a right-angled triangle 45 degrees clockwise, which corner will be at the bottom?",
+        "options": ["Right angle", "Smallest angle", "Largest angle", "Cannot be determined"],
+        "answer": 0,
+        "explanation": "When a right-angled triangle is rotated 45 degrees clockwise, the right angle will be at the bottom.",
+        "optimalTime": 75
+    },
+    {
+        "topic": "Cognitive Ability Test",
+        "subTopic": "Logical Reasoning",
+        "difficulty": "Hard",
+        "text": "If it rains, the grass gets wet. The grass is not wet. Therefore:",
+        "options": ["It did not rain", "It might rain later", "It is raining", "None of the above"],
+        "answer": 0,
+        "explanation": "The statement suggests a direct cause and effect. If the grass is not wet, it follows that it did not rain.",
+        "optimalTime": 75
+    }
+]
