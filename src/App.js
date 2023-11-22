@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './Login';
-import Register from './Register';
 import Dashboard from './Dashboard';
 import PreAssessment from './PreAssessment';
 import FinalAssessment from './FinalAssessment';
@@ -12,7 +10,6 @@ function App() {
     const [currentView, setCurrentView] = useState('login');
     const [testTopic, setTestTopic] = useState('');
     const [username, setUsername] = useState('');
-    const [shouldNavigateToPreAssessment, setShouldNavigateToPreAssessment] = useState(false);
 
     useEffect(() => {
         console.log("isLoggedIn:", isLoggedIn, "isPreAssessmentStarted:", isPreAssessmentStarted);
@@ -23,14 +20,12 @@ function App() {
         const session = sessionStorage.getItem('userSession');
         if (session) {
             const sessionObj = JSON.parse(session);
-            if (Date.now() < sessionObj.expiry) {
+            if (sessionObj.email && Date.now() < sessionObj.expiry) {
                 setIsLoggedIn(true);
-                setUsername(sessionObj.username);
-            } else {
-                sessionStorage.removeItem('userSession');
+                setUsername(sessionObj.email); // Make sure to store the email or username in the session storage during login
+                setCurrentView('dashboard');
             }
         }
-
 
         const interval = setInterval(() => {
             const session = sessionStorage.getItem('userSession');
@@ -46,61 +41,40 @@ function App() {
     }, []);
 
 
-    const handleLogin = (username) => {
+    const handleLogin = (email) => {
         setIsLoggedIn(true);
-        setUsername(username);
+        setUsername(email);
         const expiry = Date.now() + 5 * (60000);
         setCurrentView('dashboard');
-        sessionStorage.setItem('userSession', JSON.stringify({ username, expiry }));
+        sessionStorage.setItem('userSession', JSON.stringify({ email, expiry }));
     };
 
     const handleStartPreAssessment = (topic) => {
         setTestTopic(topic);
-        setCurrentView('preAssessment'); // Change view to PreAssessment
+        setCurrentView('preAssessment');
     };
 
     const handleStartFinalAssessment = (topic) => {
         setTestTopic(topic);
-        setCurrentView('finalAssessment'); // Change view to PreAssessment
+        setCurrentView('finalAssessment');
     };
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         setIsLoggedIn(false);
         setUsername('');
         setIsPreAssessmentStarted(false);
-
         sessionStorage.removeItem('userSession');
+        setCurrentView('login');
     };
-
-    // return (
-    //     <Router>
-    //         <div className="App">
-    //             <Routes>
-    //                 <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login onLogin={handleLogin} />} />
-    //                 <Route path="/register" element={<Register />} />
-    //                 <Route path="/dashboard" element={isLoggedIn ? <Dashboard userName={username} onStartPreAssessment={(topic) => {
-    //                     setTestTopic(topic);
-    //                     setIsPreAssessmentStarted(true);
-    //                     console.log("Appjs Starting PreAssessment with topic:", testTopic);
-    //                     console.log("Appjs PreAssessment started?:", isPreAssessmentStarted);
-    //                 }} onLogout={handleLogout} /> : <Navigate to="/" />} />
-    //                 <Route path="/pre-assessment" element={isPreAssessmentStarted ? <PreAssessment userName={username} testTopic={testTopic} /> : <Navigate to="/dashboard" />} />
-    //                 { }
-    //             </Routes>
-    //         </div>
-    //     </Router>
-    // );
 
     const renderCurrentView = () => {
         switch (currentView) {
             case 'login':
-                return <Login onLogin={handleLogin}/>;
-            case 'register':
-                return <Register />;
+                return <Login onLogin={handleLogin} />;
             case 'dashboard':
                 return <Dashboard userName={username} onStartPreAssessment={handleStartPreAssessment} onStartFinalAssessment={handleStartFinalAssessment} onLogout={handleLogout} />;
             case 'preAssessment':
-                return <PreAssessment userName={username} testTopic={testTopic} />;
+                return <PreAssessment userName={username} testTopic={testTopic} onNavigateToDashboard={() => setCurrentView('dashboard')} />;
             case 'finalAssessment':
                 return <FinalAssessment userName={username} testTopic={testTopic} />;
             default:

@@ -1,7 +1,6 @@
 
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import './Login.css';
 import xebiaLogo from './images/xebiaLogo.png';
 import atlasLogo from './images/atlasLogo.png';
@@ -9,10 +8,47 @@ import atlasLogo from './images/atlasLogo.png';
 function Login(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
-    const handleLogin = () => {
+    function isValidEmail(email) {
+        return email.toLowerCase().endsWith("@xebia.com");
+    }
+
+    const handleLogin = async () => {
+        setErrorMessage(''); // Clear any previous error messages
+
+        if (!isValidEmail(email)) {
+            setErrorMessage('Use xebia id to login');
+            return; // Stop the login process if email is invalid
+        }
         if (email && password) {
-            props.onLogin(email, password);
+            try {
+                const response = await fetch('http://localhost:5000/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    props.onLogin(email);
+                } else {
+                    // Handle login failure
+                    setErrorMessage('User does not exist. Contact your administrator.');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+            }
+        }
+    };
+
+    const handleKeyPress = (event) => {
+        // Check if the Enter key was pressed
+        if (event.key === 'Enter') {
+            handleLogin();
         }
     };
 
@@ -27,17 +63,21 @@ function Login(props) {
                 <h1>Welcome to ATLAS</h1>
                 <p className='motto'>Tailoring your assessment experience to highlight your strengths and discover your potential.</p>
                 <h2>Get Started</h2>
+                {errorMessage && <div className="login-error">{errorMessage}</div>}
                 <input
                     type="email"
                     placeholder="Enter your Email ID"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    className={errorMessage ? 'input-error' : ''}
                 />
                 <input
                     type="password"
                     placeholder="Enter your Password"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
+                    onKeyPress={handleKeyPress}
                 />
                 <div className="login-actions">
                     <button className="login-button" onClick={handleLogin}>Sign In</button>

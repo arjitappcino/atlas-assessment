@@ -42,9 +42,9 @@
 
 .login-atlas-logo {
     display: block;
-    margin: 0 auto; 
+    margin: 0 auto;
     height: 200px;
-  }
+}
 
 .welcome-section h1 {
     font-size: 2.5em;
@@ -75,7 +75,7 @@
     margin-bottom: 1em;
 }
 
-.login-section p{
+.login-section p {
     font-size: 14px;
 }
 
@@ -99,7 +99,7 @@ input[type="password"] {
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    
+
 }
 
 .remember-me {
@@ -146,14 +146,48 @@ input[type="password"] {
 }
 
 .register-link {
-    color: #007bff; /* Example color - use whatever fits your design */
-    text-decoration: none; /* Removes underline from links */
+    color: #007bff;
+    /* Example color - use whatever fits your design */
+    text-decoration: none;
+    /* Removes underline from links */
     /* Add more styling as needed */
-  }
-  
-  /* Hover state for the link */
-  .register-link:hover {
-    text-decoration: underline; /* Adds underline on hover */
+}
+
+/* Hover state for the link */
+.register-link:hover {
+    text-decoration: underline;
+    /* Adds underline on hover */
     /* Add more styling as needed */
-  }
-  
+}
+
+.login-error {
+    color: red;
+    /* background-color: #ffc0cb; */
+    /* border: 1px solid red; */
+    padding: 10px;
+    margin-bottom: 10px;
+    /* Add some space between the error message and the input field */
+    border-radius: 4px;
+    /* Optional: if you want rounded corners */
+    text-align: center;
+}
+
+.input-error {
+    border: 1px solid red;
+}
+
+.validation-error {
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 4px;
+    /* Adjust as needed */
+    display: flex;
+    align-items: center;
+}
+
+.validation-error:before {
+    content: "⚠";
+    /* Unicode warning sign */
+    margin-right: 4px;
+    /* Adjust as needed */
+}

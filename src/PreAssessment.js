@@ -72,7 +72,6 @@ const App = (props) => {
     let [warnings, setWarnings] = useState(0);
     const [userData, setUserData] = useState(null);
 
-
     useEffect(() => {
 
         async function handleWarning() {
@@ -218,6 +217,16 @@ const App = (props) => {
                 console.error('Failed to save user data');
             }
         });
+
+        const sessionData = sessionStorage.getItem('userSession');
+        if (sessionData) {
+            const sessionObj = JSON.parse(sessionData);
+            sessionObj.isPreAssessmentCompleted = true;
+            sessionStorage.setItem('userSession', JSON.stringify(sessionObj));
+        }
+
+        // Redirect to Dashboard
+        props.history.push('/dashboard');
     }
 
     const handleOptionClick = (selectedOption) => {
@@ -267,7 +276,7 @@ const App = (props) => {
     const handleSkip = () => {
         updateTimeTaken();
         setSkippedQuestions(prev => ({ ...prev, [currentQuestion]: true }));
-        if(currentQuestion<questions.length - 1){
+        if (currentQuestion < questions.length - 1) {
             nextQuestion();
         }
     };
@@ -372,7 +381,10 @@ const App = (props) => {
                 <div>
                     Time Taken: {formatTime(timeTaken)}
                 </div>
-                <button style={{ marginTop: '50px' }} onClick={() => setIsReviewMode(true)}>Check Answers</button>
+                {/* <button style={{ marginTop: '50px' }} onClick={() => setIsReviewMode(true)}>Check Answers</button> */}
+                <button onClick={() => props.onNavigateToDashboard()} className="go-to-dashboard-button">
+                    Go to Dashboard
+                </button>
             </div>
         );
     }

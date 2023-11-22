@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Webcam from './Webcam';
 
 let questions = null;
 
@@ -49,6 +50,41 @@ const shuffleArray = (array) => {
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+};
+
+const TestDetails = (props) => {
+    return (
+        <div style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+            padding: '20px',
+            width: 'auto',
+            borderRadius: '6px',
+            backgroundColor: 'white',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+        }}>
+            <h1>ATLAS: Final Assessment</h1>
+            <p>Organised By: Xebia</p>
+            <p>Closes On: Wed,Dec 31, 2025, 11:59 PM IST</p>
+            <p>Duration: 10 minute(s)</p>
+            <p>Description: This is a DEMO test hosted by Team Rocket to get candidate performance level.</p>
+            {/* <p>Sections: 1</p> */}
+            <p>10 MCQ (10 minute(s))</p>
+            <p>Instructions:</p>
+            <ul>
+                <li>Make sure you have a proper internet connection.</li>
+                <li>Your webcam is working fine.</li>
+                <li>Do not use your mobile phone or other electronic devices.</li>
+            </ul>
+            <button onClick={props.onStartTest}>START TEST</button>
+        </div>
+    );
 };
 
 const App = (props) => {
@@ -165,6 +201,12 @@ const App = (props) => {
         setCombinedScore(weightedScore);
     };
 
+    const handleNoFaceDetected = () => {
+        alert("No face detected for 10 seconds. The test will now close.");
+        setIsFinished(true);
+        saveUserDataToDB(userData);
+    };
+
     const handleReady = () => {
         setShowReadinessPopup(false);
         setShowCountdown(true);
@@ -238,7 +280,7 @@ const App = (props) => {
             newEfficiencyScores = [...efficiencyScores];
             newEfficiencyScores[currentQuestion] = efficiency;
             setEfficiencyScores(newEfficiencyScores);
-        }else{
+        } else {
             const efficiency = 0;
             newEfficiencyScores = [...efficiencyScores];
             newEfficiencyScores[currentQuestion] = efficiency;
@@ -246,7 +288,7 @@ const App = (props) => {
         }
 
         console.log(`Current Efficiency: ${newEfficiencyScores[currentQuestion]}`);
-        
+
         updateTimeTaken();
         const currentDifficulty = questionsList[currentQuestion].difficulty;
 
@@ -293,7 +335,7 @@ const App = (props) => {
     const handleSkip = () => {
         updateTimeTaken();
         setSkippedQuestions(prev => ({ ...prev, [currentQuestion]: true }));
-        if(currentQuestion<questions.length - 1){
+        if (currentQuestion < questions.length - 1) {
             nextQuestion();
         }
     };
@@ -387,7 +429,6 @@ const App = (props) => {
         const userLevel = determineLevel(score);
         const timeTaken = 5 * 60 - timeRemaining;
         const userDisplayScore = correctByDifficulty['Easy'] + correctByDifficulty['Medium'] + correctByDifficulty['Hard'];
-
         return (
             <div>
                 <h2>Results: {props.userName}</h2>
@@ -405,27 +446,7 @@ const App = (props) => {
     }
 
     if (showReadinessPopup) {
-        return (
-            <div style={{
-                position: 'fixed',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
-                padding: '20px',
-                width: '370px',
-                borderRadius: '6px',
-                backgroundColor: 'white',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }} className="readiness-popup">
-                <h2>Are you ready to start the test?</h2>
-                <button onClick={handleReady}>Ready</button>
-            </div>
-
-        );
+        return <TestDetails onStartTest={handleReady} />;
     }
 
     if (!questionsList[currentQuestion]?.options) {
@@ -505,6 +526,10 @@ const App = (props) => {
             </div>
 
             <div style={{ flex: 1, padding: '20px', borderLeft: '2px solid #ccc' }}>
+                <div style={{ position: 'fixed', bottom: 0, right: 0, width: '200px', height: '150px', zIndex: 10 }}>
+                    {/* <Webcam onNoFaceDetected={handleNoFaceDetected} isTestFinished={isFinished}/> */}
+                    {/* <Webcam/> */}
+                </div>
                 <h3>Question {currentQuestion + 1}/{questionsList.length}</h3>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '20px', marginTop: '20px' }}>
                     {questionsList.map((_, index) => (
@@ -534,6 +559,7 @@ const App = (props) => {
             </div>
         </div>
     );
+
 };
 
 export default App;
