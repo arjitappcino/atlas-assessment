@@ -3,6 +3,7 @@ import Login from './Login';
 import Dashboard from './Dashboard';
 import PreAssessment from './PreAssessment';
 import FinalAssessment from './FinalAssessment';
+import AdminDashboard from './AdminDashboard';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -10,6 +11,7 @@ function App() {
     const [currentView, setCurrentView] = useState('login');
     const [testTopic, setTestTopic] = useState('');
     const [username, setUsername] = useState('');
+    const [admin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         console.log("isLoggedIn:", isLoggedIn, "isPreAssessmentStarted:", isPreAssessmentStarted);
@@ -22,8 +24,9 @@ function App() {
             const sessionObj = JSON.parse(session);
             if (sessionObj.email && Date.now() < sessionObj.expiry) {
                 setIsLoggedIn(true);
-                setUsername(sessionObj.email); // Make sure to store the email or username in the session storage during login
-                setCurrentView('dashboard');
+                setUsername(sessionObj.email);
+                setIsAdmin(sessionObj.isAdmin);
+                setCurrentView(sessionObj.isAdmin ? 'adminDashboard' : 'dashboard');
             }
         }
 
@@ -41,12 +44,13 @@ function App() {
     }, []);
 
 
-    const handleLogin = (email) => {
+    const handleLogin = (email,isAdmin) => {
         setIsLoggedIn(true);
         setUsername(email);
+        setIsAdmin(isAdmin);
+        setCurrentView(admin ? 'adminDashboard' : 'dashboard');
         const expiry = Date.now() + 5 * (60000);
-        setCurrentView('dashboard');
-        sessionStorage.setItem('userSession', JSON.stringify({ email, expiry }));
+        sessionStorage.setItem('userSession', JSON.stringify({ email, expiry, isAdmin }));
     };
 
     const handleStartPreAssessment = (topic) => {
@@ -60,8 +64,33 @@ function App() {
     };
 
     const handleLogout = async () => {
+        const session = sessionStorage.getItem('userSession');
+        if (session) {
+            const { email } = JSON.parse(session);
+            try {
+                const response = await fetch('http://localhost:5000/api/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email }), // Send the userId
+                });
+
+                // Check if the logout was successful
+                const data = await response.json();
+                if (!data.success) {
+                    console.error('Failed to log out:', data.message);
+                    // Handle failed logout attempt
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                // Handle error in logout attempt
+            }
+        }
+
         setIsLoggedIn(false);
         setUsername('');
+        setIsAdmin(false);
         setIsPreAssessmentStarted(false);
         sessionStorage.removeItem('userSession');
         setCurrentView('login');
@@ -77,6 +106,8 @@ function App() {
                 return <PreAssessment userName={username} testTopic={testTopic} onNavigateToDashboard={() => setCurrentView('dashboard')} />;
             case 'finalAssessment':
                 return <FinalAssessment userName={username} testTopic={testTopic} />;
+            case 'adminDashboard':
+                return <AdminDashboard userName={username} />;
             default:
                 return <Login onLogin={handleLogin} />;
         }

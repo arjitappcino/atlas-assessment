@@ -16,6 +16,17 @@ app.post('/savePerformance', (req, res) => {
   });
 });
 
+app.post('/saveFinalPerformance', (req, res) => {
+  const data = req.body;
+  const query = 'INSERT INTO userFinalPerformanceRecord SET ?';
+
+  db.query(query, data, (error, results) => {
+    if (error) throw error;
+    res.json({ id: results.insertId });
+  });
+});
+
+
 app.get('/getQuestions', (req, res) => {
   dbConnection.query('SELECT * FROM questionBank', (error, results) => {
     if (error) {
@@ -92,6 +103,19 @@ app.get('/revisedQuestionBank/topic/:topic', (req, res) => {
   });
 });
 
+app.get('/revisedQuestionBank/topic/:topic/difficulty/:difficulty', (req, res) => {
+  const { topic, difficulty } = req.params;
+  db.query('SELECT * FROM revisedQuestionBank WHERE topic = ? AND difficulty = ?', [topic, difficulty], (err, result) => {
+    if (err) {
+      res.status(500).send('Server error');
+      console.error(err);
+    } else {
+      res.json(result);
+    }
+  });
+});
+
+
 app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
 
@@ -111,9 +135,12 @@ app.post('/api/login', (req, res) => {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
-    // User is authenticated
-    res.status(200).json({ success: true, message: 'Login successful', userId: user.id }); // Send back user ID or other needed info
+    res.status(200).json({ success: true, message: 'Login successful', userId: user.id, isAdmin: user.isAdmin }); // Send back user ID or other needed info
   });
+});
+
+app.post('/api/statusActive', (req, res) => {
+  const { email } = req.body;
 
   db.query('UPDATE users SET status = "active" WHERE email = ?', [email], (updateError) => {
     if (updateError) {

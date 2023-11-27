@@ -28,13 +28,13 @@ function Login(props) {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ email, password }),
+                    body: JSON.stringify({ email, password}),
                 });
 
                 const data = await response.json();
 
                 if (data.success) {
-                    props.onLogin(email);
+                    props.onLogin(email,data.isAdmin);
                 } else {
                     // Handle login failure
                     setErrorMessage('User does not exist. Contact your administrator.');
@@ -42,13 +42,27 @@ function Login(props) {
             } catch (error) {
                 console.error('Login error:', error);
             }
-        }
-    };
 
-    const handleKeyPress = (event) => {
-        // Check if the Enter key was pressed
-        if (event.key === 'Enter') {
-            handleLogin();
+            try {
+                const response = await fetch('http://localhost:5000/api/statusActive', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email }),
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    console.log("status now active on database");
+                } else {
+                    // Handle login failure
+                    console.log("status didn't change");
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+            }
         }
     };
 
@@ -69,7 +83,6 @@ function Login(props) {
                     placeholder="Enter your Email ID"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
-                    onKeyPress={handleKeyPress}
                     className={errorMessage ? 'input-error' : ''}
                 />
                 <input
@@ -77,7 +90,6 @@ function Login(props) {
                     placeholder="Enter your Password"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
-                    onKeyPress={handleKeyPress}
                 />
                 <div className="login-actions">
                     <button className="login-button" onClick={handleLogin}>Sign In</button>

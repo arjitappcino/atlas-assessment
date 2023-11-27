@@ -50,15 +50,16 @@ function Dashboard(props) {
                 <div className="test-card">
                     <img src={catIcon} alt="Cognitive Ability Test Icon" />
                     <h3>Pre-Assessment Test</h3>
-                    <p>A non-adaptive test used to find user level for Final Assessment Test</p>
+                    <p>A non-adaptive test</p>
                     <button className="test-button" onClick={() => startPreAssessment('Cognitive Ability Test')}>START TEST</button>
                 </div>
 
                 <div className="test-card" style={{ boxShadow: '0 5px 10px rgba(0, 100, 0, 0.5)' }}>
                     <img src={petIcon} alt="Employee Behaviour Test Icon" />
                     <h3>Final Assessment Test</h3>
-                    <p>An adaptive test used to find accurate user level based on performance as per score and time taken.</p>
-                    <button className="test-button" onClick={() => startFinalAssessment('Cognitive Ability Test')} disabled={!isPreAssessmentCompleted}>START TEST</button>
+                    <p>Adaptive test</p>
+                    {/* <button className="test-button" onClick={() => startFinalAssessment('Cognitive Ability Test')} disabled={!isPreAssessmentCompleted}>START TEST</button> */}
+                    <button className="test-button" onClick={() => startFinalAssessment('Cognitive Ability Test')}>START TEST</button>
                 </div>
             </div>
         </>
